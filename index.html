@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo App with Comments</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<h1>Todo App</h1>
+
+<!-- Add Todo Form -->
+<form method="POST">
+    <input type="text" name="title" placeholder="Enter todo" required>
+    <button type="submit">Add</button>
+</form>
+
+<ul>
+    {% for todo in todos %}
+        <li>
+            {% if todo.completed %}
+                <s>{{ todo.title }}</s>
+            {% else %}
+                {{ todo.title }}
+            {% endif %}
+            <a href="/complete/{{ todo.id }}">✅</a>
+            <a href="/delete/{{ todo.id }}">❌</a>
+
+            <!-- Comments -->
+            <ul>
+                {% for comment in todo.comments %}
+                    <li>{{ comment.content }}</li>
+                {% endfor %}
+            </ul>
+
+            <!-- Add Comment Form -->
+            <form method="POST" action="/comment/{{ todo.id }}">
+                <input type="text" name="content" placeholder="Add comment" required>
+                <button type="submit">Comment</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>
